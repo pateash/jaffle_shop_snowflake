@@ -15,8 +15,8 @@
     "version" : 3
   },
   "processes" : {
-    "orders##CGSFJl7L" : {
-      "id" : "orders##CGSFJl7L",
+    "orders##qpcmkT9p" : {
+      "id" : "orders##qpcmkT9p",
       "component" : "Model",
       "metadata" : {
         "label" : "orders",
@@ -31,15 +31,46 @@
       "ports" : {
         "inputs" : [ ],
         "outputs" : [ {
-          "id" : "f1tFv5CU",
+          "id" : "fRzEeuDa",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "joined##vJHq4Uwe" : {
-      "id" : "joined##vJHq4Uwe",
+    "customers##hLy7udjS" : {
+      "id" : "customers##hLy7udjS",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "customers",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM joined\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "tEg2vpaO",
+          "slug" : "joined"
+        } ],
+        "outputs" : [ {
+          "id" : "EUsg6jfA",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "joined##po0ndcCe" : {
+      "id" : "joined##po0ndcCe",
       "component" : "Join",
       "metadata" : {
         "label" : "joined",
@@ -94,22 +125,45 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "ee5fgLrR",
+          "id" : "vIVy66Cn",
           "slug" : "customers"
         }, {
-          "id" : "Nntgi7xO",
+          "id" : "TWOhaHLb",
           "slug" : "customer_orders_summary"
         } ],
         "outputs" : [ {
-          "id" : "U98lwgxJ",
+          "id" : "oVyawNIq",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "customer_orders_summary##tfvVaLTo" : {
-      "id" : "customer_orders_summary##tfvVaLTo",
+    "customers##SP4PnfQp" : {
+      "id" : "customers##SP4PnfQp",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "customers",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg_customers",
+          "sourceType" : "Model"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "LebFupqZ",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "customer_orders_summary##Fb7cofwb" : {
+      "id" : "customer_orders_summary##Fb7cofwb",
       "component" : "Aggregate",
       "metadata" : {
         "label" : "customer_orders_summary",
@@ -171,65 +225,11 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "KcXu0w5o",
+          "id" : "RVbVKF0x",
           "slug" : "orders"
         } ],
         "outputs" : [ {
-          "id" : "FCF7ihqp",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "customers##ScakMKec" : {
-      "id" : "customers##ScakMKec",
-      "component" : "Model",
-      "metadata" : {
-        "label" : "customers",
-        "phase" : 0
-      },
-      "properties" : {
-        "table" : {
-          "name" : "stg_customers",
-          "sourceType" : "Model"
-        }
-      },
-      "ports" : {
-        "inputs" : [ ],
-        "outputs" : [ {
-          "id" : "fX2SpHZj",
-          "slug" : "out"
-        } ],
-        "isCustomOutputSchema" : false,
-        "autoUpdateOnRun" : false
-      }
-    },
-    "customers##qVpVAOst" : {
-      "id" : "customers##qVpVAOst",
-      "component" : "TargetModel",
-      "metadata" : {
-        "label" : "customers",
-        "phase" : 0,
-        "macroDependencies" : [ ]
-      },
-      "properties" : {
-        "customQueryDisabled" : true,
-        "customQuery" : false,
-        "incrementalEditorDisabled" : true,
-        "query" : "SELECT * \n\nFROM joined\n",
-        "incrementalKey" : false,
-        "incremental" : {
-          "expression" : "true"
-        }
-      },
-      "ports" : {
-        "inputs" : [ {
-          "id" : "WmzLGXty",
-          "slug" : "joined"
-        } ],
-        "outputs" : [ {
-          "id" : "KnKiUPuh",
+          "id" : "W1n3KiFw",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -238,29 +238,29 @@
     }
   },
   "connections" : [ {
-    "id" : "E6hhJGIx",
-    "source" : "orders##CGSFJl7L",
-    "sourcePort" : "f1tFv5CU",
-    "target" : "customer_orders_summary##tfvVaLTo",
-    "targetPort" : "KcXu0w5o"
+    "id" : "VCi30LOo",
+    "source" : "orders##qpcmkT9p",
+    "sourcePort" : "fRzEeuDa",
+    "target" : "customer_orders_summary##Fb7cofwb",
+    "targetPort" : "RVbVKF0x"
   }, {
-    "id" : "koVlBI46",
-    "source" : "customers##ScakMKec",
-    "sourcePort" : "fX2SpHZj",
-    "target" : "joined##vJHq4Uwe",
-    "targetPort" : "ee5fgLrR"
+    "id" : "sFDr5Q93",
+    "source" : "customers##SP4PnfQp",
+    "sourcePort" : "LebFupqZ",
+    "target" : "joined##po0ndcCe",
+    "targetPort" : "vIVy66Cn"
   }, {
-    "id" : "gZXZL397",
-    "source" : "customer_orders_summary##tfvVaLTo",
-    "sourcePort" : "FCF7ihqp",
-    "target" : "joined##vJHq4Uwe",
-    "targetPort" : "Nntgi7xO"
+    "id" : "iY1jSyde",
+    "source" : "customer_orders_summary##Fb7cofwb",
+    "sourcePort" : "W1n3KiFw",
+    "target" : "joined##po0ndcCe",
+    "targetPort" : "TWOhaHLb"
   }, {
-    "id" : "JS9wLTrX",
-    "source" : "joined##vJHq4Uwe",
-    "sourcePort" : "U98lwgxJ",
-    "target" : "customers##qVpVAOst",
-    "targetPort" : "WmzLGXty"
+    "id" : "W3PyjjQC",
+    "source" : "joined##po0ndcCe",
+    "sourcePort" : "oVyawNIq",
+    "target" : "customers##hLy7udjS",
+    "targetPort" : "tEg2vpaO"
   } ],
   "component" : "Model"
 }
