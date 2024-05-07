@@ -8,7 +8,30 @@ buildSystemDetails: null
 pipelines: {}
 datasets: {}
 templates: {}
-jobs: {}
+jobs:
+  jobs/sftp_to_snowflake_airflow_job:
+    name: sftp_to_snowflake_airflow_job
+    description: ''
+    fabricUID: 2
+    scheduler:
+      Composer: {}
+    cloudProvider: null
+    jobSize: null
+    scheduleCron: 0 0 * * *
+    timeout: null
+    alerting:
+      emails: ''
+      onStart: false
+      onSuccess: false
+      onFailure: false
+    pipelines: []
+    jobClusterMode:
+      clusterMode:
+        Single: {}
+      clusterId: null
+    enabled: null
+    createdAt: '2024-05-07 12:06:50'
+    author: ashish@prophecy.io
 gemContainer:
   languageVersion: ''
   gemLibsVersion: ''
@@ -168,6 +191,7 @@ sqlModels:
     author: ashish@prophecy.io
     files:
     - models/marts/metricflow_time_spine.sql
+    - .prophecy/ide/models/metricflow_time_spine.json
     sqlDependencies:
       models: []
       datasets: []
@@ -278,44 +302,32 @@ sqlSources:
     createdAt: '2024-05-07 12:01:25'
     tables:
     - name: raw_customers
-      schema:
-        providerType: snowflake
-        fields: []
+      schema: null
       description: One record per person who has purchased one or more items
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_orders
-      schema:
-        providerType: snowflake
-        fields: []
+      schema: null
       description: One record per order (consisting of one or more order items)
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_items
-      schema:
-        providerType: snowflake
-        fields: []
+      schema: null
       description: Items included in an order
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_stores
-      schema:
-        providerType: snowflake
-        fields: []
+      schema: null
       description: null
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_products
-      schema:
-        providerType: snowflake
-        fields: []
+      schema: null
       description: One record per SKU for items sold in stores
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_supplies
-      schema:
-        providerType: snowflake
-        fields: []
+      schema: null
       description: One record per supply per SKU of items sold in stores
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'

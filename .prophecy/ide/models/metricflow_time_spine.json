@@ -1,7 +1,7 @@
 {
-  "id" : "stg_customers",
+  "id" : "metricflow_time_spine",
   "metainfo" : {
-    "label" : "stg_customers",
+    "label" : "metricflow_time_spine",
     "autoLayout" : true,
     "staleState" : "none",
     "sourceSuggestions" : {
@@ -15,35 +15,41 @@
     "version" : 3
   },
   "processes" : {
-    "source##G6itFyxE" : {
-      "id" : "source##G6itFyxE",
-      "component" : "Source",
+    "days##bDR6afC7" : {
+      "id" : "days##bDR6afC7",
+      "component" : "Macro",
       "metadata" : {
-        "label" : "source",
-        "phase" : 0
+        "label" : "days",
+        "phase" : 0,
+        "macroDependencies" : [ "dbt_date.get_base_dates" ],
+        "comment" : "for BQ adapters use \"DATE('01/01/2000','mm/dd/yyyy')\""
       },
       "properties" : {
-        "table" : {
-          "name" : "raw_customers",
-          "sourceType" : "Source",
-          "sourceName" : "ecom"
-        }
+        "macroName" : "get_base_dates",
+        "parameters" : [ {
+          "name" : "n_dateparts",
+          "value" : "365 * 10"
+        }, {
+          "name" : "datepart",
+          "value" : "\"day\""
+        } ],
+        "projectName" : "dbt_date"
       },
       "ports" : {
         "inputs" : [ ],
         "outputs" : [ {
-          "id" : "dXFRMVSY",
+          "id" : "UIHwsb0w",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "renamed##Qmq5yaSN" : {
-      "id" : "renamed##Qmq5yaSN",
+    "cast_to_date##xTIS3VHk" : {
+      "id" : "cast_to_date##xTIS3VHk",
       "component" : "Reformat",
       "metadata" : {
-        "label" : "renamed",
+        "label" : "cast_to_date",
         "phase" : 0,
         "macroDependencies" : [ ]
       },
@@ -51,34 +57,29 @@
         "columnsSelector" : [ ],
         "expressions" : [ {
           "expression" : {
-            "expression" : "----------  ids\nid"
+            "expression" : "CAST(date_day AS date)"
           },
-          "alias" : "customer_id"
-        }, {
-          "expression" : {
-            "expression" : "---------- text\nname"
-          },
-          "alias" : "customer_name"
+          "alias" : "date_day"
         } ]
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "hKR5T4A9",
-          "slug" : "source"
+          "id" : "kr1tGamc",
+          "slug" : "days"
         } ],
         "outputs" : [ {
-          "id" : "aMtPGX5S",
+          "id" : "ryhBeA3B",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
         "autoUpdateOnRun" : false
       }
     },
-    "stg_customers##qtSIcGIa" : {
-      "id" : "stg_customers##qtSIcGIa",
+    "metricflow_time_spine##aChkIomo" : {
+      "id" : "metricflow_time_spine##aChkIomo",
       "component" : "TargetModel",
       "metadata" : {
-        "label" : "stg_customers",
+        "label" : "metricflow_time_spine",
         "phase" : 0,
         "macroDependencies" : [ ]
       },
@@ -86,7 +87,7 @@
         "customQueryDisabled" : true,
         "customQuery" : false,
         "incrementalEditorDisabled" : true,
-        "query" : "SELECT * \n\nFROM renamed\n",
+        "query" : "SELECT * \n\nFROM cast_to_date\n",
         "incrementalKey" : false,
         "incremental" : {
           "expression" : "true"
@@ -94,11 +95,11 @@
       },
       "ports" : {
         "inputs" : [ {
-          "id" : "RWX2FaLO",
-          "slug" : "renamed"
+          "id" : "XXl8a6yC",
+          "slug" : "cast_to_date"
         } ],
         "outputs" : [ {
-          "id" : "veytspXC",
+          "id" : "zK1fRJuQ",
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -107,17 +108,17 @@
     }
   },
   "connections" : [ {
-    "id" : "Z3Vf585r",
-    "source" : "source##G6itFyxE",
-    "sourcePort" : "dXFRMVSY",
-    "target" : "renamed##Qmq5yaSN",
-    "targetPort" : "hKR5T4A9"
+    "id" : "jF3Ot2Zx",
+    "source" : "days##bDR6afC7",
+    "sourcePort" : "UIHwsb0w",
+    "target" : "cast_to_date##xTIS3VHk",
+    "targetPort" : "kr1tGamc"
   }, {
-    "id" : "wGw7J720",
-    "source" : "renamed##Qmq5yaSN",
-    "sourcePort" : "aMtPGX5S",
-    "target" : "stg_customers##qtSIcGIa",
-    "targetPort" : "RWX2FaLO"
+    "id" : "znHPisik",
+    "source" : "cast_to_date##xTIS3VHk",
+    "sourcePort" : "ryhBeA3B",
+    "target" : "metricflow_time_spine##aChkIomo",
+    "targetPort" : "XXl8a6yC"
   } ],
   "component" : "Model"
 }

@@ -33,10 +33,6 @@
         "inputs" : [ ],
         "outputs" : [ {
           "id" : "XnaUpUmc",
-          "schema" : {
-            "providerType" : "snowflake",
-            "fields" : [ ]
-          },
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -108,10 +104,6 @@
       "ports" : {
         "inputs" : [ {
           "id" : "KozaJai2",
-          "schema" : {
-            "providerType" : "snowflake",
-            "fields" : [ ]
-          },
           "slug" : "source"
         } ],
         "outputs" : [ {

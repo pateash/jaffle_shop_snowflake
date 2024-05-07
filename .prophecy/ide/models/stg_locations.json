@@ -33,10 +33,6 @@
         "inputs" : [ ],
         "outputs" : [ {
           "id" : "dLUQ5wYD",
-          "schema" : {
-            "providerType" : "snowflake",
-            "fields" : [ ]
-          },
           "slug" : "out"
         } ],
         "isCustomOutputSchema" : false,
@@ -77,10 +73,6 @@
       "ports" : {
         "inputs" : [ {
           "id" : "qcynqB9J",
-          "schema" : {
-            "providerType" : "snowflake",
-            "fields" : [ ]
-          },
           "slug" : "source"
         } ],
         "outputs" : [ {
