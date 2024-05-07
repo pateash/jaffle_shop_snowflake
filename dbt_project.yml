@@ -1,36 +1,53 @@
-config-version: 2
-
+# ==================
+# Project Details
+# ==================
 name: "jaffle_shop"
+config-version: 2
+require-dbt-version:
+- ">=1.5.0"
 version: "3.0.0"
-require-dbt-version: ">=1.5.0"
+profile: "default"
 
-dbt-cloud:
-  project-id: 275557 # Put your project id here
-
-profile: default # Put your profile here
-
-model-paths: ["models"]
-analysis-paths: ["analyses"]
-test-paths: ["data-tests"]
-seed-paths: ["seeds"]
-macro-paths: ["macros"]
-snapshot-paths: ["snapshots"]
-
-target-path: "target"
+# ==================
+# File Path Configs
+# ==================
+test-paths:
+- "data-tests"
 clean-targets:
-  - "target"
-  - "dbt_packages"
+- "target"
+- "dbt_packages"
+snapshot-paths:
+- "snapshots"
+seed-paths:
+- "seeds"
+model-paths:
+- "models"
+- "prophecy-sources"
+analysis-paths:
+- "analyses"
+macro-paths:
+- "macros"
+target-path: "target"
 
+# ==================
+# Variable Configs
+# ==================
 vars:
-  "dbt_date:time_zone": "America/Los_Angeles"
+  dbt_date:time_zone: "America/Los_Angeles"
 
-seeds:
-  jaffle_shop:
-    +schema: raw
-
+# ==================
+# Model Configs
+# ==================
 models:
   jaffle_shop:
-    staging:
-      +materialized: view
     marts:
-      +materialized: table
+      "+materialized": "table"
+    staging:
+      "+materialized": "view"
+
+# ==================
+# Seed Configs
+# ==================
+seeds:
+  jaffle_shop:
+    "+schema": "raw"

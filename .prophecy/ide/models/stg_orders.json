@@ -1,0 +1,171 @@
+{
+  "id" : "stg_orders",
+  "metainfo" : {
+    "label" : "stg_orders",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "source##BYYvmVjJ" : {
+      "id" : "source##BYYvmVjJ",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "source",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "raw_orders",
+          "sourceType" : "Source",
+          "sourceName" : "ecom"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "XnaUpUmc",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "renamed##g6NOxhI3" : {
+      "id" : "renamed##g6NOxhI3",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "renamed",
+        "phase" : 0,
+        "macroDependencies" : [ "cents_to_dollars", "dbt.date_trunc" ]
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "----------  ids\nid"
+          },
+          "alias" : "order_id"
+        }, {
+          "expression" : {
+            "expression" : "store_id"
+          },
+          "alias" : "location_id"
+        }, {
+          "expression" : {
+            "expression" : "customer"
+          },
+          "alias" : "customer_id"
+        }, {
+          "expression" : {
+            "expression" : "---------- numerics\nsubtotal"
+          },
+          "alias" : "subtotal_cents"
+        }, {
+          "expression" : {
+            "expression" : "tax_paid"
+          },
+          "alias" : "tax_paid_cents"
+        }, {
+          "expression" : {
+            "expression" : "order_total"
+          },
+          "alias" : "order_total_cents"
+        }, {
+          "expression" : {
+            "expression" : "{{ cents_to_dollars('subtotal') }}"
+          },
+          "alias" : "subtotal"
+        }, {
+          "expression" : {
+            "expression" : "{{ cents_to_dollars('tax_paid') }}"
+          },
+          "alias" : "tax_paid"
+        }, {
+          "expression" : {
+            "expression" : "{{ cents_to_dollars('order_total') }}"
+          },
+          "alias" : "order_total"
+        }, {
+          "expression" : {
+            "expression" : "---------- timestamps\n{{ dbt.date_trunc('day', 'ordered_at') }}"
+          },
+          "alias" : "ordered_at"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "KozaJai2",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "source"
+        } ],
+        "outputs" : [ {
+          "id" : "K9AX1aT4",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_orders##kvzG2sOB" : {
+      "id" : "stg_orders##kvzG2sOB",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "stg_orders",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM renamed\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "aDYRgbH2",
+          "slug" : "renamed"
+        } ],
+        "outputs" : [ {
+          "id" : "zP0Y39cX",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "z0pQfnxm",
+    "source" : "source##BYYvmVjJ",
+    "sourcePort" : "XnaUpUmc",
+    "target" : "renamed##g6NOxhI3",
+    "targetPort" : "KozaJai2"
+  }, {
+    "id" : "NAzdQPXP",
+    "source" : "renamed##g6NOxhI3",
+    "sourcePort" : "K9AX1aT4",
+    "target" : "stg_orders##kvzG2sOB",
+    "targetPort" : "aDYRgbH2"
+  } ],
+  "component" : "Model"
+}

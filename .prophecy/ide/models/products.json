@@ -1,0 +1,81 @@
+{
+  "id" : "products",
+  "metainfo" : {
+    "label" : "products",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "products##jGaifRDS" : {
+      "id" : "products##jGaifRDS",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "products",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg_products",
+          "sourceType" : "Model"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "x4K8VQIK",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "products##WGWyebvv" : {
+      "id" : "products##WGWyebvv",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "products",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM products\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "Ob9Pka1C",
+          "slug" : "products"
+        } ],
+        "outputs" : [ {
+          "id" : "tTpLWRal",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "pKfCPNA3",
+    "source" : "products##jGaifRDS",
+    "sourcePort" : "x4K8VQIK",
+    "target" : "products##WGWyebvv",
+    "targetPort" : "Ob9Pka1C"
+  } ],
+  "component" : "Model"
+}

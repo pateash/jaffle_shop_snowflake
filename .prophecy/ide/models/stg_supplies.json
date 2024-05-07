@@ -1,0 +1,151 @@
+{
+  "id" : "stg_supplies",
+  "metainfo" : {
+    "label" : "stg_supplies",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "source##aHFqz10I" : {
+      "id" : "source##aHFqz10I",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "source",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "raw_supplies",
+          "sourceType" : "Source",
+          "sourceName" : "ecom"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "kAN1XwVL",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "renamed##Y7kBDRFu" : {
+      "id" : "renamed##Y7kBDRFu",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "renamed",
+        "phase" : 0,
+        "macroDependencies" : [ "dbt_utils.generate_surrogate_key", "cents_to_dollars" ]
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "----------  ids\n{{ dbt_utils.generate_surrogate_key(['id', 'sku']) }}"
+          },
+          "alias" : "supply_uuid"
+        }, {
+          "expression" : {
+            "expression" : "id"
+          },
+          "alias" : "supply_id"
+        }, {
+          "expression" : {
+            "expression" : "sku"
+          },
+          "alias" : "product_id"
+        }, {
+          "expression" : {
+            "expression" : "---------- text\nname"
+          },
+          "alias" : "supply_name"
+        }, {
+          "expression" : {
+            "expression" : "---------- numerics\n{{ cents_to_dollars('cost') }}"
+          },
+          "alias" : "supply_cost"
+        }, {
+          "expression" : {
+            "expression" : "---------- booleans\nperishable"
+          },
+          "alias" : "is_perishable_supply"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "a4sh70zV",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "source"
+        } ],
+        "outputs" : [ {
+          "id" : "Te9kiblD",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_supplies##q2Z0TouZ" : {
+      "id" : "stg_supplies##q2Z0TouZ",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "stg_supplies",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM renamed\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "TpPy9a0k",
+          "slug" : "renamed"
+        } ],
+        "outputs" : [ {
+          "id" : "fPjdb51d",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "xrFk1iHh",
+    "source" : "source##aHFqz10I",
+    "sourcePort" : "kAN1XwVL",
+    "target" : "renamed##Y7kBDRFu",
+    "targetPort" : "a4sh70zV"
+  }, {
+    "id" : "EltV0uBJ",
+    "source" : "renamed##Y7kBDRFu",
+    "sourcePort" : "Te9kiblD",
+    "target" : "stg_supplies##q2Z0TouZ",
+    "targetPort" : "TpPy9a0k"
+  } ],
+  "component" : "Model"
+}

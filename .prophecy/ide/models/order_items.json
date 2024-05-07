@@ -1,0 +1,307 @@
+{
+  "id" : "order_items",
+  "metainfo" : {
+    "label" : "order_items",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "order_items##T2RTtvur" : {
+      "id" : "order_items##T2RTtvur",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "order_items",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg_order_items",
+          "sourceType" : "Model"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "GqNjHvpX",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "orders##YciVy9fe" : {
+      "id" : "orders##YciVy9fe",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "orders",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg_orders",
+          "sourceType" : "Model"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "L4Q5zUwH",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "joined##PsupLpTu" : {
+      "id" : "joined##PsupLpTu",
+      "component" : "Join",
+      "metadata" : {
+        "label" : "joined",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "conditions" : [ {
+          "alias" : "orders",
+          "expression" : {
+            "expression" : "order_items.order_id = orders.order_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "products",
+          "expression" : {
+            "expression" : "order_items.product_id = products.product_id"
+          },
+          "joinType" : "LEFT"
+        }, {
+          "alias" : "order_supplies_summary",
+          "expression" : {
+            "expression" : "order_items.product_id = order_supplies_summary.product_id"
+          },
+          "joinType" : "LEFT"
+        } ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "order_items.*"
+          }
+        }, {
+          "expression" : {
+            "expression" : "orders.ordered_at"
+          }
+        }, {
+          "expression" : {
+            "expression" : "products.product_name"
+          }
+        }, {
+          "expression" : {
+            "expression" : "products.product_price"
+          }
+        }, {
+          "expression" : {
+            "expression" : "products.is_food_item"
+          }
+        }, {
+          "expression" : {
+            "expression" : "products.is_drink_item"
+          }
+        }, {
+          "expression" : {
+            "expression" : "order_supplies_summary.supply_cost"
+          }
+        } ],
+        "activeTab" : "conditions",
+        "columnsSelector" : [ ],
+        "headAlias" : "order_items"
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "L1yhE2RL",
+          "slug" : "order_items"
+        }, {
+          "id" : "h8mGqhVy",
+          "slug" : "orders"
+        }, {
+          "id" : "eUpX0fD1",
+          "slug" : "products"
+        }, {
+          "id" : "xfbjEp12",
+          "slug" : "order_supplies_summary"
+        } ],
+        "outputs" : [ {
+          "id" : "aTx1ZzgK",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "products##CowxLpU6" : {
+      "id" : "products##CowxLpU6",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "products",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg_products",
+          "sourceType" : "Model"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "fSOyvyax",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "supplies##My6Qbb0r" : {
+      "id" : "supplies##My6Qbb0r",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "supplies",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg_supplies",
+          "sourceType" : "Model"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "zNKBQXC9",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "order_items##aRxcQ5d5" : {
+      "id" : "order_items##aRxcQ5d5",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "order_items",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM joined\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "VwowwyPo",
+          "slug" : "joined"
+        } ],
+        "outputs" : [ {
+          "id" : "rmCUJ3Xz",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "order_supplies_summary##jIWL0XVi" : {
+      "id" : "order_supplies_summary##jIWL0XVi",
+      "component" : "Aggregate",
+      "metadata" : {
+        "label" : "order_supplies_summary",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "aggregate" : [ {
+          "expression" : {
+            "expression" : "product_id"
+          }
+        }, {
+          "expression" : {
+            "expression" : "sum(supply_cost)"
+          },
+          "alias" : "supply_cost"
+        } ],
+        "allowSelection" : true,
+        "condition" : {
+          "expression" : ""
+        },
+        "activeTab" : "aggregate",
+        "columnsSelector" : [ ],
+        "groupBy" : [ {
+          "expression" : {
+            "expression" : "1"
+          }
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ZOiGhu1l",
+          "slug" : "supplies"
+        } ],
+        "outputs" : [ {
+          "id" : "L2NCoQNf",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "lR85XX9y",
+    "source" : "supplies##My6Qbb0r",
+    "sourcePort" : "zNKBQXC9",
+    "target" : "order_supplies_summary##jIWL0XVi",
+    "targetPort" : "ZOiGhu1l"
+  }, {
+    "id" : "eqD1gGgr",
+    "source" : "order_items##T2RTtvur",
+    "sourcePort" : "GqNjHvpX",
+    "target" : "joined##PsupLpTu",
+    "targetPort" : "L1yhE2RL"
+  }, {
+    "id" : "Vqvgp2CE",
+    "source" : "orders##YciVy9fe",
+    "sourcePort" : "L4Q5zUwH",
+    "target" : "joined##PsupLpTu",
+    "targetPort" : "h8mGqhVy"
+  }, {
+    "id" : "AgSRLF5I",
+    "source" : "products##CowxLpU6",
+    "sourcePort" : "fSOyvyax",
+    "target" : "joined##PsupLpTu",
+    "targetPort" : "eUpX0fD1"
+  }, {
+    "id" : "JFlLf8qj",
+    "source" : "order_supplies_summary##jIWL0XVi",
+    "sourcePort" : "L2NCoQNf",
+    "target" : "joined##PsupLpTu",
+    "targetPort" : "xfbjEp12"
+  }, {
+    "id" : "YQRWeTTA",
+    "source" : "joined##PsupLpTu",
+    "sourcePort" : "aTx1ZzgK",
+    "target" : "order_items##aRxcQ5d5",
+    "targetPort" : "VwowwyPo"
+  } ],
+  "component" : "Model"
+}

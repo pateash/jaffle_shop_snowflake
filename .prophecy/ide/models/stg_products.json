@@ -1,0 +1,156 @@
+{
+  "id" : "stg_products",
+  "metainfo" : {
+    "label" : "stg_products",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "source##rlmCXcCP" : {
+      "id" : "source##rlmCXcCP",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "source",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "raw_products",
+          "sourceType" : "Source",
+          "sourceName" : "ecom"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "U9EULhGU",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "renamed##N2KRAsqs" : {
+      "id" : "renamed##N2KRAsqs",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "renamed",
+        "phase" : 0,
+        "macroDependencies" : [ "cents_to_dollars" ]
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "----------  ids\nsku"
+          },
+          "alias" : "product_id"
+        }, {
+          "expression" : {
+            "expression" : "---------- text\nname"
+          },
+          "alias" : "product_name"
+        }, {
+          "expression" : {
+            "expression" : "type"
+          },
+          "alias" : "product_type"
+        }, {
+          "expression" : {
+            "expression" : "description"
+          },
+          "alias" : "product_description"
+        }, {
+          "expression" : {
+            "expression" : "---------- numerics\n{{ cents_to_dollars('price') }}"
+          },
+          "alias" : "product_price"
+        }, {
+          "expression" : {
+            "expression" : "---------- booleans\ncoalesce(\n  type = 'jaffle', \n  false)"
+          },
+          "alias" : "is_food_item"
+        }, {
+          "expression" : {
+            "expression" : "coalesce(\n  type = 'beverage', \n  false)"
+          },
+          "alias" : "is_drink_item"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "IU9J5QPB",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "source"
+        } ],
+        "outputs" : [ {
+          "id" : "Zmx6DCfi",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_products##GGgfPQuS" : {
+      "id" : "stg_products##GGgfPQuS",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "stg_products",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM renamed\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "nhZHn1v6",
+          "slug" : "renamed"
+        } ],
+        "outputs" : [ {
+          "id" : "Y2nLouTW",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "oabgSNCm",
+    "source" : "source##rlmCXcCP",
+    "sourcePort" : "U9EULhGU",
+    "target" : "renamed##N2KRAsqs",
+    "targetPort" : "IU9J5QPB"
+  }, {
+    "id" : "tzUhVwFv",
+    "source" : "renamed##N2KRAsqs",
+    "sourcePort" : "Zmx6DCfi",
+    "target" : "stg_products##GGgfPQuS",
+    "targetPort" : "nhZHn1v6"
+  } ],
+  "component" : "Model"
+}

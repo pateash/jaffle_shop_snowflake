@@ -1,0 +1,78 @@
+{
+  "cents_to_dollars" : {
+    "name" : "cents_to_dollars",
+    "macroType" : "query",
+    "definition" : "{{ return(adapter.dispatch('cents_to_dollars')(column_name)) }}",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none",
+    "version" : 0
+  },
+  "default__cents_to_dollars" : {
+    "name" : "default__cents_to_dollars",
+    "macroType" : "expression",
+    "definition" : "({{column_name}} / 100)::numeric(16, 2)",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none",
+    "version" : 0
+  },
+  "postgres__cents_to_dollars" : {
+    "name" : "postgres__cents_to_dollars",
+    "macroType" : "expression",
+    "definition" : "({{column_name}}::numeric(16, 2) / 100)",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none",
+    "version" : 0
+  },
+  "bigquery__cents_to_dollars" : {
+    "name" : "bigquery__cents_to_dollars",
+    "macroType" : "expression",
+    "definition" : "round(CAST(({{column_name}} / 100) AS numeric), 2)",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "column_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none",
+    "version" : 0
+  }
+}

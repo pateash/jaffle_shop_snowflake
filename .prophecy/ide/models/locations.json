@@ -1,0 +1,81 @@
+{
+  "id" : "locations",
+  "metainfo" : {
+    "label" : "locations",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "locations##TtzBkeSq" : {
+      "id" : "locations##TtzBkeSq",
+      "component" : "Model",
+      "metadata" : {
+        "label" : "locations",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "stg_locations",
+          "sourceType" : "Model"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "sEVVYUKO",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "locations##GLqlYyDx" : {
+      "id" : "locations##GLqlYyDx",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "locations",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM locations\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "cSemZZ6m",
+          "slug" : "locations"
+        } ],
+        "outputs" : [ {
+          "id" : "Zxmrmcax",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "x4etHWW4",
+    "source" : "locations##TtzBkeSq",
+    "sourcePort" : "sEVVYUKO",
+    "target" : "locations##GLqlYyDx",
+    "targetPort" : "cSemZZ6m"
+  } ],
+  "component" : "Model"
+}

@@ -1,0 +1,29 @@
+{
+  "generate_schema_name" : {
+    "name" : "generate_schema_name",
+    "macroType" : "expression",
+    "definition" : "{% set default_schema = target.schema %}\n \n{#seeds go in a global `raw` schema#}\n{% if node.resource_type == 'seed' %}\n  {{custom_schema_name | trim}}\n{#non-specified schemas go to the default target schema#}\n{% elif custom_schema_name is none %}\n  {{default_schema}}\n{#specified custom schema names go to the schema name prepended with the the default schema name in prod (as this is an example project we want the schemas clearly labeled)#}\n{% elif target.name == 'prod' %}\n  {{default_schema}}_{{custom_schema_name | trim}}\n{#specified custom schemas go to the default target schema for non-prod targets#}\n{% else %}\n  {{default_schema}}\n{% endif %} \n",
+    "parameters" : {
+      "type" : "record",
+      "fields" : [ {
+        "name" : "custom_schema_name",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      }, {
+        "name" : "node",
+        "kind" : {
+          "type" : "value"
+        },
+        "optional" : false,
+        "isWorkflowNodeConfiguration" : false,
+        "isReferenced" : false
+      } ]
+    },
+    "staleState" : "none",
+    "version" : 0
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "id" : "stg_locations",
+  "metainfo" : {
+    "label" : "stg_locations",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "source##dgZcp9YS" : {
+      "id" : "source##dgZcp9YS",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "source",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "raw_stores",
+          "sourceType" : "Source",
+          "sourceName" : "ecom"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "dLUQ5wYD",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "renamed##jHQ2F51r" : {
+      "id" : "renamed##jHQ2F51r",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "renamed",
+        "phase" : 0,
+        "macroDependencies" : [ "dbt.date_trunc" ]
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "----------  ids\nid"
+          },
+          "alias" : "location_id"
+        }, {
+          "expression" : {
+            "expression" : "---------- text\nname"
+          },
+          "alias" : "location_name"
+        }, {
+          "expression" : {
+            "expression" : "---------- numerics\ntax_rate"
+          }
+        }, {
+          "expression" : {
+            "expression" : "---------- timestamps\n{{ dbt.date_trunc('day', 'opened_at') }}"
+          },
+          "alias" : "opened_date"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "qcynqB9J",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "source"
+        } ],
+        "outputs" : [ {
+          "id" : "H38TY1r7",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_locations##xfBrqGez" : {
+      "id" : "stg_locations##xfBrqGez",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "stg_locations",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM renamed\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "ZoaKxvIm",
+          "slug" : "renamed"
+        } ],
+        "outputs" : [ {
+          "id" : "nvNhu8Qn",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "zEl8iV9q",
+    "source" : "source##dgZcp9YS",
+    "sourcePort" : "dLUQ5wYD",
+    "target" : "renamed##jHQ2F51r",
+    "targetPort" : "qcynqB9J"
+  }, {
+    "id" : "uDnJFOC9",
+    "source" : "renamed##jHQ2F51r",
+    "sourcePort" : "H38TY1r7",
+    "target" : "stg_locations##xfBrqGez",
+    "targetPort" : "ZoaKxvIm"
+  } ],
+  "component" : "Model"
+}

@@ -1,0 +1,135 @@
+{
+  "id" : "stg_order_items",
+  "metainfo" : {
+    "label" : "stg_order_items",
+    "autoLayout" : true,
+    "staleState" : "none",
+    "sourceSuggestions" : {
+      "sources" : [ ]
+    },
+    "graphConfig" : {
+      "userDefinedConfig" : {
+        "vars" : { }
+      }
+    },
+    "version" : 3
+  },
+  "processes" : {
+    "source##YAztHCxh" : {
+      "id" : "source##YAztHCxh",
+      "component" : "Source",
+      "metadata" : {
+        "label" : "source",
+        "phase" : 0
+      },
+      "properties" : {
+        "table" : {
+          "name" : "raw_items",
+          "sourceType" : "Source",
+          "sourceName" : "ecom"
+        }
+      },
+      "ports" : {
+        "inputs" : [ ],
+        "outputs" : [ {
+          "id" : "Ld4MTHJ2",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "renamed##nvvxZHhN" : {
+      "id" : "renamed##nvvxZHhN",
+      "component" : "Reformat",
+      "metadata" : {
+        "label" : "renamed",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "columnsSelector" : [ ],
+        "expressions" : [ {
+          "expression" : {
+            "expression" : "----------  ids\nid"
+          },
+          "alias" : "order_item_id"
+        }, {
+          "expression" : {
+            "expression" : "order_id"
+          }
+        }, {
+          "expression" : {
+            "expression" : "sku"
+          },
+          "alias" : "product_id"
+        } ]
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "LKQPkK36",
+          "schema" : {
+            "providerType" : "snowflake",
+            "fields" : [ ]
+          },
+          "slug" : "source"
+        } ],
+        "outputs" : [ {
+          "id" : "jzBbhkhQ",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    },
+    "stg_order_items##nxOg2rYT" : {
+      "id" : "stg_order_items##nxOg2rYT",
+      "component" : "TargetModel",
+      "metadata" : {
+        "label" : "stg_order_items",
+        "phase" : 0,
+        "macroDependencies" : [ ]
+      },
+      "properties" : {
+        "customQueryDisabled" : true,
+        "customQuery" : false,
+        "incrementalEditorDisabled" : true,
+        "query" : "SELECT * \n\nFROM renamed\n",
+        "incrementalKey" : false,
+        "incremental" : {
+          "expression" : "true"
+        }
+      },
+      "ports" : {
+        "inputs" : [ {
+          "id" : "pwNPCpoW",
+          "slug" : "renamed"
+        } ],
+        "outputs" : [ {
+          "id" : "gWZf1wtc",
+          "slug" : "out"
+        } ],
+        "isCustomOutputSchema" : false,
+        "autoUpdateOnRun" : false
+      }
+    }
+  },
+  "connections" : [ {
+    "id" : "l2ZvMATP",
+    "source" : "source##YAztHCxh",
+    "sourcePort" : "Ld4MTHJ2",
+    "target" : "renamed##nvvxZHhN",
+    "targetPort" : "LKQPkK36"
+  }, {
+    "id" : "icYQuetj",
+    "source" : "renamed##nvvxZHhN",
+    "sourcePort" : "jzBbhkhQ",
+    "target" : "stg_order_items##nxOg2rYT",
+    "targetPort" : "pwNPCpoW"
+  } ],
+  "component" : "Model"
+}
