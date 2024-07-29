@@ -32,6 +32,7 @@ jobs:
     enabled: null
     createdAt: '2024-05-07 12:06:50'
     author: ashish@prophecy.io
+    models: []
 gemContainer:
   languageVersion: ''
   gemLibsVersion: ''
@@ -44,6 +45,7 @@ functions:
   udafs: {}
   expressions: {}
   airflowFunctions: {}
+  businessRules: {}
 subgraphs: {}
 sqlModels:
   .prophecy/metadata/sqlmodels/stg_orders:
@@ -302,32 +304,44 @@ sqlSources:
     createdAt: '2024-05-07 12:01:25'
     tables:
     - name: raw_customers
-      schema: null
+      schema:
+        providerType: snowflake
+        fields: []
       description: One record per person who has purchased one or more items
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_orders
-      schema: null
+      schema:
+        providerType: snowflake
+        fields: []
       description: One record per order (consisting of one or more order items)
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_items
-      schema: null
+      schema:
+        providerType: snowflake
+        fields: []
       description: Items included in an order
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_stores
-      schema: null
+      schema:
+        providerType: snowflake
+        fields: []
       description: null
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_products
-      schema: null
+      schema:
+        providerType: snowflake
+        fields: []
       description: One record per SKU for items sold in stores
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
     - name: raw_supplies
-      schema: null
+      schema:
+        providerType: snowflake
+        fields: []
       description: One record per supply per SKU of items sold in stores
       author: ashish@prophecy.io
       createdAt: '2024-05-07 12:01:25'
